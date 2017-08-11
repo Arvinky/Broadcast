@@ -7,52 +7,60 @@
 //
 
 #import "BroadcastHandle.h"
+#import "AppDelegate.h"
 @interface BroadcastHandle () <CBPeripheralManagerDelegate>
 
 @property (nonatomic, strong) NSUUID *proximityUUID;
 @end
-static BroadcastHandle *handle = nil;
+#define UUID1 @"FFF9"
+#define MaxLen (21)
 void Broadcast(Byte *byte, int len) {
-    NSData *data = [NSData dataWithBytes:byte length:len];
-    [BroadcastHandle shareInstance].data = data;
+    Byte tempData[21];
+    memset(tempData, 0, 21);
+    if (len>MaxLen) {
+        len = MaxLen;
+    }
+    memcpy(tempData, byte, len);
+    NSString *beaconKey = @"kCBAdvDataAppleBeaconKey";
+    Byte uuidbyte[4] = {0xff, 0xff,0xff, 0xf9};
+    NSData *data = [NSData dataWithBytes:tempData length:21];
+    CBUUID *uuid = [CBUUID UUIDWithData:[NSData dataWithBytes:uuidbyte length:4]];
+    NSDictionary *dic =@{
+                         beaconKey:data,
+                         CBAdvertisementDataServiceUUIDsKey : @[uuid]
+                         };
+    NSLog(@"%@", dic);
+    
+    [[BroadcastHandle shareInstance].manager startAdvertising:dic];
     
 }
 @implementation BroadcastHandle
 
 - (instancetype)init {
     if (self = [super init]) {
-        _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil];
+        NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 @"ARRestoreIdentifier",CBCentralManagerOptionRestoreIdentifierKey, nil];
+        _manager = [[CBPeripheralManager alloc] initWithDelegate:self queue:nil options:options];
     }
     return self;
 }
+
+static BroadcastHandle *handle = nil;
 + (instancetype)shareInstance {
-    
+
     static dispatch_once_t token;
     dispatch_once(&token, ^{
         handle = [[BroadcastHandle alloc] init];
     });
     return handle;
 }
-- (void)starAdvertise {
-    NSString *beaconKey = @"kCBAdvDataAppleBeaconKey";
-    NSLog(@"%@", self.data);
-    if (!_data) {
-        Byte byte[21] = {0,1,2,3,4,5,6,7,8,9,0xa,0xb,0xc,0xd,0xe,0xf};
-        _data = [NSData dataWithBytes:byte length:21];
-    }
-    [self.manager startAdvertising:@{beaconKey:self.data}];
+- (void)peripheralManager:(CBPeripheralManager *)peripheral willRestoreState:(NSDictionary<NSString *,id> *)dict {
+
+    NSLog(@"willRestoreState->%s",__func__);
 }
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral {
-    switch (peripheral.state) {
-        case CBManagerStatePoweredOn:
-        {
-            [self starAdvertise];
-            
-        }
-            break;
-            
-        default:
-            break;
+    if (self.UpdataState) {
+        self.UpdataState(peripheral.state);
     }
 }
 - (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(NSError *)error {

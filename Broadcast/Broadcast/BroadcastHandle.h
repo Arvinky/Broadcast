@@ -13,5 +13,8 @@
 void Broadcast(Byte *byte, int len);
 @property (nonatomic, strong) NSData *data;
 @property (nonatomic, strong) CBPeripheralManager *manager;
+@property (nonatomic, copy) void(^UpdataState) (CBManagerState state);
+@property (nonatomic, assign) NSTimeInterval begin;
+
 + (instancetype)shareInstance;
 @end

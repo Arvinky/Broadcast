@@ -434,6 +434,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = J3AJAYU5N6;
 				INFOPLIST_FILE = Broadcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = otw0909.Broadcastshiqinglu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -449,6 +450,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = J3AJAYU5N6;
 				INFOPLIST_FILE = Broadcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = otw0909.Broadcastshiqinglu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -522,6 +524,7 @@
 				A20FF0281F3D237200A03E1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A20FF0291F3D237200A03E1C /* Build configuration list for PBXNativeTarget "BroadcastTests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +533,7 @@
 				A20FF02B1F3D237200A03E1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A20FF02C1F3D237200A03E1C /* Build configuration list for PBXNativeTarget "BroadcastUITests" */ = {
 			isa = XCConfigurationList;
@@ -538,6 +542,7 @@
 				A20FF02E1F3D237200A03E1C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
